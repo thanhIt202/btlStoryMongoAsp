@@ -1,0 +1,46 @@
+﻿@model MongodbAspStory.Models.ViewModels.ChapterViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div>
+    <div class="row mb-2">
+        <div class="col-sm-6">
+            <h1 class="m-0">Chi tiết Chapter Truyện</h1>
+        </div>
+        <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="HomeAdmin" asp-action="Index">Home Admin</a></li>
+                <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="ChaptersAdmin" asp-action="Index">Danh sách Chapter Truyện</a></li>
+                <li class="breadcrumb-item active">Chi tiết Chapter Truyện</li>
+            </ol>
+        </div>
+    </div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">Chapter ID: </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model._id)
+        </dd>
+        <dt class="col-sm-2">Chapter Name: </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.chapName)
+        </dd>
+        <dt class="col-sm-2">Chapter Content: </dt>
+        <dd class="col-sm-10 text-white">
+            @Html.Raw(Model.chapContent)
+        </dd>
+        <dt class="col-sm-2">Chapter Date: </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.chapDate)
+        </dd>
+        <dt class="col-sm-2">Story Title: </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.title)
+        </dd>
+    </dl>
+</div>
+<div class="btn btn-primary">
+    @Html.ActionLink("Edit", "Edit", new { id = Model._id })
+</div>

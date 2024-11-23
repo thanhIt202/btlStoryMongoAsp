@@ -1,0 +1,70 @@
+﻿@model MongodbAspStory.Models.DataModels.Account
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="row mb-2">
+    <div class="col-sm-6">
+        <h1 class="m-0">Sửa tài khoản</h1>
+    </div>
+    <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="HomeAdmin" asp-action="Index">Home Admin</a></li>
+            <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="AccountsAdmin" asp-action="Index">Danh sách tài khoản</a></li>
+            <li class="breadcrumb-item active">Sửa tài khoản</li>
+        </ol>
+    </div>
+</div>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input asp-for="_id" type="hidden" class="form-control" />
+                <input asp-for="password" type="hidden" class="form-control" />
+                <input asp-for="accType" type="hidden" class="form-control" />
+            <div class="form-group">
+                <label class="control-label">Account Full Name: </label>
+                <input asp-for="fullName" class="form-control" />
+                <span asp-validation-for="fullName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Account Email: </label>
+                <input asp-for="email" class="form-control" readonly />
+                <span asp-validation-for="email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Account Phone: </label>
+                <input type="number" asp-for="accPhone" class="form-control" />
+                <span asp-validation-for="accPhone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Account Address: </label>
+                <textarea asp-for="accAddress" class="form-control"></textarea>
+                <span asp-validation-for="accAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Account Avatar: </label>
+                <input asp-for="avatar" type="file" class="form-control mb-2" />
+                <input name="avt" class="form-control mb-2" type="hidden" value="@Model.avatar" />
+                <img src="~/Images/@Model.avatar" width="30" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">Account Status: </label>
+                <select asp-for="accStatus" class="form-control">
+                    <option value="Đang hoạt động">Đang hoạt động</option>
+                    <option value="Đang bị khóa tạm thời">Đang bị khóa tạm thời</option>
+                    <option value="Đã bị xóa">Đã bị xóa</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

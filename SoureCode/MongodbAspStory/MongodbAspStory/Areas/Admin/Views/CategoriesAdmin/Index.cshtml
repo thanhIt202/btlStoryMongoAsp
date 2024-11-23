@@ -1,0 +1,103 @@
+﻿@model IEnumerable<MongodbAspStory.Models.DataModels.Category>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="row mb-2">
+    <div class="col-sm-6">
+        <h1 class="m-0">Danh sách Thể Loại Truyện</h1>
+    </div>
+    <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="HomeAdmin" asp-action="Index">Home Admin</a></li>
+            <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="CategoriesAdmin" asp-action="Index">Danh sách Thể Loại Truyện</a></li>
+            <li class="breadcrumb-item active">Danh sách Thể Loại Truyện</li>
+        </ol>
+    </div>
+</div>
+<hr />
+<div class="row">
+    <div class="col-md-6 offset-md-2">
+        <form action="" method="get">
+            <div class="input-group">
+                <input type="text" name="name" class="form-control form-control-lg" placeholder="Nhập tên cần tìm...">
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-lg btn-default">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <a asp-action="Create" class="btn btn-primary pt-2"><i class="fas fa-plus"></i> Thêm mới</a>
+</div>
+<br />
+<h1 class="my-3">
+    <b class="text-success">@TempData["Message"]</b>
+    <b class="text-danger">@TempData["MessageErr"]</b>
+</h1>
+<br />
+<table class="table">
+    <thead>
+        <tr>
+            <th>Category ID</th>
+            <th>Category Name</th>
+            <th>Category Status</th>
+            <th>Category Edit</th>
+            <th>Category Details</th>
+            <th>Category Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item._id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.catName)
+            </td>
+            <td>
+                @if (@item.catStatus == 0)
+                {
+                    <span>Tạm ẩn</span>
+                }
+                else
+                {
+                    <span>Hiển thị</span>
+                }
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item._id })
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new { id = item._id })
+            </td>
+            <td>
+                @Html.ActionLink("Delete", "Delete", new { id = item._id })
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+<br />
+<div class="container">
+    <ul class="pagination">
+        @for (int i = 1; i <= ViewBag.totalPage; i++)
+        {
+            if(i == (int)ViewBag.page)
+            {
+                <li class="page-item"><a class="page-link" href="#">@i</a></li>
+            }
+            else if(ViewBag.name != null)
+            {
+                <li class="page-item"><a class="page-link" href="?page=@i&name=@ViewBag.name">@i</a></li>
+            }
+            else
+            {
+                <li class="page-item"><a class="page-link" href="?page=@i">@i</a></li>
+            }
+        }
+    </ul>
+</div>

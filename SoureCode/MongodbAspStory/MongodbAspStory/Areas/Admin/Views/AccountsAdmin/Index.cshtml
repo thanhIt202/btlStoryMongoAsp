@@ -1,0 +1,107 @@
+﻿@model IEnumerable<MongodbAspStory.Models.DataModels.Account>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="row mb-2">
+    <div class="col-sm-6">
+        <h1 class="m-0">Danh sách tài khoản</h1>
+    </div>
+    <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="HomeAdmin" asp-action="Index">Home Admin</a></li>
+            <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="AccountsAdmin" asp-action="Index">Danh sách tài khoản</a></li>
+            <li class="breadcrumb-item active">Danh sách tài khoản</li>
+        </ol>
+    </div>
+</div>
+<hr />
+<div class="row">
+    <div class="col-md-6 offset-md-2">
+        <form action="" method="get">
+            <div class="input-group">
+                <input type="text" name="name" class="form-control form-control-lg" placeholder="Nhập tên cần tìm...">
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-lg btn-default">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<br />
+<h1 class="my-3">
+    <b class="text-success">@TempData["Message"]</b>
+    <b class="text-danger">@TempData["MessageErr"]</b>
+</h1>
+<br />
+<table class="table">
+    <thead>
+        <tr>
+            <th>Account ID</th>
+            <th>Account Full Name</th>
+            <th>Account Email</th>
+            <th>Account Phone</th>
+            <th>Account Address</th>
+            <th>Account Avatar</th>
+            <th>Account Status</th>
+            <th>Account Edit</th>
+            <th>Account Details</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item._id)</td>
+                <td>@Html.DisplayFor(modelItem => item.fullName)</td>
+                <td>@Html.DisplayFor(modelItem => item.email)</td>
+                <td>@Html.DisplayFor(modelItem => item.accPhone)</td>
+                <td>@Html.DisplayFor(modelItem => item.accAddress)</td>
+                <td>
+                    <img src="~/Images/@item.avatar" width="80px" height="85px" />
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.accStatus)</td>
+
+                @if (item.accType == "user")
+                {
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item._id })
+                    </td>
+                }
+                else
+                {
+                    <td></td> <!-- Admin accounts don't show the Edit link -->
+                }
+
+                <td>
+                    @Html.ActionLink("Details", "Details", new { id = item._id })
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+<br />
+<div class="container">
+    <ul class="pagination">
+        @for (int i = 1; i <= ViewBag.totalPage; i++)
+        {
+            if (i == (int)ViewBag.page)
+            {
+                <li class="page-item"><a class="page-link" href="#">@i</a></li>
+            }
+            else if (ViewBag.name != null)
+            {
+                <li class="page-item"><a class="page-link" href="?page=@i&name=@ViewBag.name">@i</a></li>
+            }
+            else
+            {
+                <li class="page-item"><a class="page-link" href="?page=@i">@i</a></li>
+            }
+        }
+    </ul>
+</div>

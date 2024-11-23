@@ -1,0 +1,88 @@
+﻿@model MongodbAspStory.Models.DataModels.Account
+
+@{
+    ViewData["Title"] = "AccountInformation";
+}
+
+<div class="container">
+    <h1 style="text-align:center">Account Information</h1>
+    <h5>
+        <b class="text-success">@TempData["Message"]</b>
+        <b class="text-danger">@TempData["MessageErr"]</b>
+    </h5>
+    <form asp-action="AccountInformation" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="_id" />
+        <input type="hidden" asp-for="password" />
+        <input type="hidden" asp-for="accStatus" />
+        <input type="hidden" asp-for="accType" />
+        @if (Model.accType == "user")
+        {
+        <div class="row my-5">
+            <div class="col-5">
+                <input name="avt" class="form-control mb-2" type="hidden" value="@Model.avatar" />
+                <img src="~/Images/@Model.avatar" width="100%" height="80%" />
+                <input asp-for="avatar" type="file" class="form-control mb-2" />
+                <input asp-for="avatar" type="hidden" class="form-control mb-2" />
+            </div>
+            <div class="col-7">
+                <div class="row my-5">
+                    <b class="col-md-2 mt-3">Email :</b>
+                    <input asp-for="email" class="form-control col-md-10" readonly />
+                </div>
+                <div class="row my-5">
+                    <b class="col-md-2 mt-3">Full Name :</b>
+                    <input asp-for="fullName" class="form-control col-md-10" />
+                    <span asp-validation-for="fullName" class="text-danger"></span>
+                </div>
+                <div class="row my-5">
+                    <b class="col-md-2 mt-3">Phone :</b>
+                    <input asp-for="accPhone" type="number" class="form-control col-md-10" />
+                    <span asp-validation-for="accPhone" class="text-danger"></span>
+                </div>
+                <div class="row my-5">
+                    <b class="col-md-2 mt-3">Address :</b>
+                    <input asp-for="accAddress" class="form-control col-md-10" />
+                    <span asp-validation-for="accAddress" class="text-danger"></span>
+                </div>
+                <div class="form-group" style="text-align:center">
+                    <input type="submit" value="Save" class="btn btn-success p-2 my-5" />
+                    <a class="btn btn-danger p-2 my-5" asp-action="Logout">Logout</a>
+                </div>
+            </div>
+        </div>
+        }
+        @if (Model.accType == "admin")
+        {
+            <div class="row my-5">
+                <div class="col-5">
+                    <img src="~/Images/@Model.avatar" width="100%" height="80%" />
+                </div>
+                <div class="col-7">
+                    <div class="row my-5">
+                        <b class="col-md-2 mt-3">Email :</b>
+                        <input asp-for="email" class="form-control col-md-10" readonly />
+                    </div>
+                    <div class="row my-5">
+                        <b class="col-md-2 mt-3">Full Name :</b>
+                        <input asp-for="fullName" class="form-control col-md-10" readonly />
+                        <span asp-validation-for="fullName" class="text-danger"></span>
+                    </div>
+                    <div class="row my-5">
+                        <b class="col-md-2 mt-3">Phone :</b>
+                        <input asp-for="accPhone" type="number" class="form-control col-md-10" readonly />
+                        <span asp-validation-for="accPhone" class="text-danger"></span>
+                    </div>
+                    <div class="row my-5">
+                        <b class="col-md-2 mt-3">Address :</b>
+                        <input asp-for="accAddress" class="form-control col-md-10" readonly />
+                        <span asp-validation-for="accAddress" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" style="text-align:center">
+                        <a class="btn btn-danger p-2 my-5" asp-action="Logout">Logout</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </form>
+</div>

@@ -1,0 +1,177 @@
+﻿@model IEnumerable<MongodbAspStory.Models.ViewModels.StoryViewModel>
+@{
+    ViewData["Title"] = "Home User";
+}
+
+<div class="section-stories-hot mb-3">
+    <div class="container">
+        <div class="row">
+            <div class="head-title-global d-flex justify-content-between mb-2">
+                <div class="col-6 col-md-4 col-lg-4 head-title-global__left d-flex align-items-center">
+                    <h2 class="me-2 mb-0 border-bottom border-secondary pb-1">
+                        <a href="#"
+                           class="d-block text-decoration-none text-dark fs-4 story-name"
+                           title="Truyện Hot">Truyện Hot</a>
+                    </h2>
+                    <i class="fa-solid fa-fire-flame-curved"></i>
+                </div>
+                <div class="col-4 col-md-3 col-lg-2">
+                    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 mb-3">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle btn btn-light" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Thể loại </a>
+                            <ul class="dropdown-menu dropdown-menu-custom">
+                                @foreach (var category in ViewBag.categories)
+                                {
+                                    <li>
+                                        <a asp-action="StoCat" asp-route-id="@category._id" class="dropdown-item">@category.catName</a>
+                                    </li>
+                                }
+                                
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="section-stories-hot__list">
+                    @foreach (var item in Model)
+                    {
+                        <div class="story-item">
+                            <a asp-action="Story" asp-route-id="@item._id"
+                            class="d-block text-decoration-none">
+                                <div class="story-item__image">
+                                    <img src="~/Images/@item.image" class="img-fluid" style="max-width: 150px; width: 100%; height: 230px;">
+                                </div>
+                                <h3 class="story-item__name text-one-row story-name">@Html.DisplayFor(modelItem => item.title) </h3>
+                                <div class="list-badge">
+                                    <span class="story-item__badge story-item__badge-hot badge text-bg-danger">Hot</span>
+                                    <span class="story-item__badge badge text-bg-success">@Html.DisplayFor(modelItem => item.stoStatus)</span>
+                                </div>
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row align-items-start">
+        <div class="col-12 col-md-8 col-lg-9">
+            <div class="section-stories-new mb-3">
+                <div class="row">
+                    <div class="head-title-global d-flex justify-content-between mb-2">
+                        <div class="col-6 col-md-4 col-lg-4 head-title-global__left d-flex align-items-center">
+                            <h2 class="me-2 mb-0 border-bottom border-secondary pb-1">
+                                <a href="https://suustore.com/#"
+                                   class="d-block text-decoration-none text-dark fs-4 story-name"
+                                   title="Truyện Mới">Truyện Mới</a>
+                            </h2>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="section-stories-new__list">
+                            @foreach (var item in Model)
+                            {
+                                <div class="story-item-no-image">
+                                    <div class="story-item-no-image__name d-flex align-items-center">
+                                        <h3 class="me-1 mb-0 d-flex align-items-center">
+                                            <svg style="width: 10px; margin-right: 5px;"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            height="1em"
+                                            viewBox="0 0 320 512">
+                                                <path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z">
+                                                </path>
+                                            </svg>
+                                            <a asp-action="Story" asp-route-id="@item._id"
+                                               class="text-decoration-none text-dark fs-6 hover-title text-one-row story-name">@Html.DisplayFor(modelItem => item.title)</a>
+                                        </h3>
+                                        <span class="badge text-bg-info text-light me-1">New</span>
+                                        <span class="badge text-bg-success text-light me-1">@Html.DisplayFor(modelItem => item.stoStatus)</span>
+                                    </div>
+                                    <div class="story-item-no-image__categories ms-2 d-none d-lg-block">
+                                        <p class="mb-0">
+                                            <a asp-action="StoCat" asp-route-id="@item.catId"
+                                               class="hover-title text-decoration-none text-dark category-name">@Html.DisplayFor(modelItem => item.catName)</a>
+                                        </p>
+                                    </div>
+                                    <div class="story-item-no-image__chapters ms-2">
+                                        <a href="#"
+                                           class="hover-title text-decoration-none text-info">Chương @Html.DisplayFor(modelItem => item.numberChap) </a>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-4 col-lg-3 sticky-md-top">
+            <div class="row">
+                <div class="col-12">
+                    <div class="section-list-category bg-light p-2 rounded card-custom">
+                        <div class="head-title-global mb-2">
+                            <div class="col-12 col-md-12 head-title-global__left">
+                                <h2 class="mb-0 border-bottom border-secondary pb-1">
+                                    <span href="#"
+                                          class="d-block text-decoration-none text-dark fs-4"
+                                          title="Truyện đang đọc"> Thể loại truyện
+                                    </span>
+                                </h2>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <ul class="list-category">
+                                @foreach (var category in ViewBag.categories)
+                                {
+                                    <li>
+                                        <a asp-action="StoCat" asp-route-id="@category._id"
+                                           class="text-decoration-none text-dark hover-title">@category.catName</a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="section-stories-full mb-3 mt-3">
+    <div class="container">
+        <div class="row">
+            <div class="head-title-global d-flex justify-content-between mb-2">
+                <div class="col-12 col-md-4 head-title-global__left d-flex">
+                    <h2 class="me-2 mb-0 border-bottom border-secondary pb-1">
+                        <span class="d-block text-decoration-none text-dark fs-4 title-head-name"
+                              title="Truyện đã hoàn thành"> Truyện đã hoàn thành
+                        </span>
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="section-stories-full__list">
+                    @foreach (var status in ViewBag.stoStatus)
+                    {
+                        <div class="story-item-full text-center">
+                            <a asp-action="Story" asp-route-id="@status._id" class="d-block story-item-full__image">
+                                <img src="~/Images/@status.image" class="img-fluid" style="max-width: 150px; width: 100%; height: 230px;">
+                            </a>
+                            <h3 class="fs-6 story-item-full__name fw-bold text-center mb-0">
+                                <a asp-action="Story" asp-route-id="@status._id" class="text-decoration-none text-one-row story-name">@status.title</a>
+                            </h3>
+                            <span class="story-item-full__badge badge text-bg-success">Full - @status.numberChap chương </span>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

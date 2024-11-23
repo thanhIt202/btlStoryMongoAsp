@@ -1,0 +1,302 @@
+﻿@model MongodbAspStory.Models.ViewModels.StoryViewModel
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "Story";
+}
+
+<div class="container">
+    <div class="row align-items-start">
+        <div class="col-12 col-md-7 col-lg-8">
+            <div class="head-title-global d-flex justify-content-between mb-4">
+                <div class="col-12 col-md-12 col-lg-4 head-title-global__left d-flex">
+                    <h2 class="me-2 mb-0 border-bottom border-secondary pb-1">
+                        <span class="d-block text-decoration-none text-dark fs-4 title-head-name"
+                              title="Thông tin truyện"> Thông tin truyện
+                        </span>
+                    </h2>
+                </div>
+            </div>
+            <div class="story-detail">
+                <div class="story-detail__top d-flex align-items-start">
+                    <div class="row align-items-start">
+                        <div class="col-12 col-md-12 col-lg-3 story-detail__top--image">
+                            <div class="book-3d">
+                                <img src="~/Images/@Model.image" class="img-fluid w-100" width="200" height="300" loading="lazy">
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-12 col-lg-9">
+                            <h3 class="text-center story-name">@Html.DisplayFor(model => model.title)</h3>
+                            <div class="story-detail__top--desc px-3"
+                                 style="max-height: 285px;">
+                                <h6>Dịch Giả: @Html.DisplayFor(model => model.interpreter)</h6>
+                                @Html.Raw(Model.stoInformation)
+                            </div>
+                            <div class="info-more">
+                                <div class="info-more--more active"
+                                     id="info_more">
+                                    <span class="me-1 text-dark">Xem thêm</span>
+                                    <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M7.70749 7.70718L13.7059 1.71002C14.336 1.08008 13.8899 0.00283241 12.9989 0.00283241L1.002 0.00283241C0.111048 0.00283241 -0.335095 1.08008 0.294974 1.71002L6.29343 7.70718C6.68394 8.09761 7.31699 8.09761 7.70749 7.70718Z"
+                                              fill="#2C2C37"></path>
+                                    </svg>
+                                </div>
+                                <a class="info-more--collapse text-decoration-none"
+                                   href="#">
+                                    <span class="me-1 text-dark">Thu gọn</span>
+                                    <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M7.70749 0.292817L13.7059 6.28998C14.336 6.91992 13.8899 7.99717 12.9989 7.99717L1.002 7.99717C0.111048 7.99717 -0.335095 6.91992 0.294974 6.28998L6.29343 0.292817C6.68394 -0.097606 7.31699 -0.0976055 7.70749 0.292817Z"
+                                              fill="#2C2C37"></path>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="story-detail__bottom mb-3">
+                    <div class="row">
+                        <div class="col-12 col-md-12 col-lg-3 story-detail__bottom--info">
+                            <p class="mb-1">
+                                <strong>Tác giả: </strong>
+                                <a href="#" class="text-decoration-none text-dark hover-title">
+                                    @Html.DisplayFor(model => model.author)
+                                </a>
+                            </p>
+                            <div class="d-flex align-items-center mb-1 flex-wrap">
+                                <strong class="me-1">
+                                    Thể loại: @Html.DisplayFor(model => model.catName)
+                                </strong>
+                            </div>
+                            <p class="mb-1">
+                                <strong>Trạng thái:</strong>
+                                <span class="text-info">@Html.DisplayFor(model => model.stoStatus)</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="story-detail__list-chapter">
+                    <div class="head-title-global d-flex justify-content-between mb-4">
+                        <div class="col-6 col-md-12 col-lg-4 head-title-global__left d-flex">
+                            <h2 class="me-2 mb-0 border-bottom border-secondary pb-1">
+                                <span href="#"
+                                      class="d-block text-decoration-none text-dark fs-4 title-head-name"
+                                      title="Truyện hot"> Danh sách chương
+                                </span>
+                            </h2>
+                        </div>
+                    </div>
+                    <div class="story-detail__list-chapter--list">
+                        <div class="row">
+                            <div class="col-12 col-sm-6 col-lg-6 story-detail__list-chapter--list__item">
+                                <ul>
+                                    @foreach (var chapter in ViewBag.chapters)
+                                    {
+                                        <li>
+                                            <a asp-action="Chapter" asp-route-id="@chapter._id"
+                                            class="text-decoration-none text-dark hover-title">
+                                                @chapter.chapName
+                                            </a>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pagination"
+                     style="justify-content: center;">
+                    <ul>
+                        @for (int i = 1; i <= ViewBag.totalPage; i++)
+                        {
+                            if (i == (int)ViewBag.page)
+                            {
+                                <li class="pagination__item  page-current">
+                                    <a class="page-link story-ajax-paginate" style="cursor: pointer;">@i</a>
+                                </li>
+                            }
+                            else if (ViewBag.name != null)
+                            {
+                                <li class="pagination__item  page-current">
+                                    <a class="page-link story-ajax-paginate" style="cursor: pointer;" href="?page=@i&name=@ViewBag.name">@i</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="pagination__item  page-current">
+                                    <a class="page-link story-ajax-paginate" style="cursor: pointer;" href="?page=@i">@i</a>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-5 col-lg-4 sticky-md-top">
+            <div class="row top-ratings">
+                <div class="col-12 top-ratings__tab mb-2">
+                    <div class="list-group d-flex flex-row"
+                         id="list-tab" role="tablist">
+                        <a class="list-group-item list-group-item-action active" id="top-day-list" data-bs-toggle="list"
+                           href="https://suustore.com/truyen/nang-khong-muon-lam-hoang-hau#top-day"
+                           role="tab" aria-controls="top-day" aria-selected="true">Cùng tác giả</a>
+                        <a class="list-group-item list-group-item-action"
+                           id="top-month-list" data-bs-toggle="list"
+                           href="https://suustore.com/truyen/nang-khong-muon-lam-hoang-hau#top-month"
+                           role="tab" aria-controls="top-month" aria-selected="false" tabindex="-1">Cùng thể loại</a>
+                        <a class="list-group-item list-group-item-action" id="top-all-time-list" data-bs-toggle="list"
+                           href="https://suustore.com/truyen/nang-khong-muon-lam-hoang-hau#top-all-time"
+                           role="tab" aria-controls="top-all-time" aria-selected="false" tabindex="-1">Hoàn thành</a>
+                    </div>
+                </div>
+                <div class="col-12 top-ratings__content">
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active"
+                             id="top-day" role="tabpanel"
+                             aria-labelledby="top-day-list">
+                            <ul>
+                                @foreach (var authors in ViewBag.stoAuthor)
+                                {
+                                    <li>
+                                        <div class="rating-item d-flex align-items-center">
+                                            <div class="rating-item__number bg-info rounded-circle">
+                                                <span class="text-light">-</span>
+                                            </div>
+                                            <div class="rating-item__story">
+                                                <a asp-action="Story" asp-route-id="@authors._id"
+                                                class="text-decoration-none hover-title rating-item__story--name text-one-row">
+                                                    @authors.title
+                                                </a>
+                                                <div class="d-flex flex-wrap rating-item__story--categories">
+                                                    <a href="#"
+                                                    class="text-decoration-none text-dark hover-title  me-1 ">
+                                                        @authors.author, @authors.catName, @authors.stoStatus
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                        <div class="tab-pane fade" id="top-month"
+                             role="tabpanel"
+                             aria-labelledby="top-month-list">
+                            <ul>
+                                @foreach (var cats in ViewBag.stoCat)
+                                {
+                                    <li>
+                                        <div class="rating-item d-flex align-items-center">
+                                            <div class="rating-item__number bg-success rounded-circle">
+                                                <span class="text-light">-</span>
+                                            </div>
+                                            <div class="rating-item__story">
+                                                <a asp-action="Story" asp-route-id="@cats._id"
+                                                class="text-decoration-none hover-title rating-item__story--name text-one-row">
+                                                    @cats.title
+                                                </a>
+                                                <div class="d-flex flex-wrap rating-item__story--categories">
+                                                    <a href="#"
+                                                    class="text-decoration-none text-dark hover-title  me-1 ">
+                                                        @cats.catName, @cats.author, @cats.stoStatus
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                        <div class="tab-pane fade" id="top-all-time" role="tabpanel" aria-labelledby="top-all-time-list">
+                            <ul>
+                                @foreach (var status in ViewBag.stoStatus)
+                                {
+                                    <li>
+                                        <div class="rating-item d-flex align-items-center">
+                                            <div class="rating-item__number bg-danger rounded-circle">
+                                                <span class="text-light">-</span>
+                                            </div>
+                                            <div class="rating-item__story">
+                                                <a asp-action="Story" asp-route-id="@status._id"
+                                                class="text-decoration-none hover-title rating-item__story--name text-one-row">
+                                                    @status.title
+                                                </a>
+                                                <div class="d-flex flex-wrap rating-item__story--categories">
+                                                    <a href="#"
+                                                    class="text-decoration-none text-dark hover-title  me-1 ">
+                                                        @status.stoStatus, @status.author, @status.catName
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section-list-category bg-light p-2 rounded card-custom">
+                <div class="head-title-global mb-2">
+                    <div class="col-12 col-md-12 head-title-global__left">
+                        <h2 class="mb-0 border-bottom border-secondary pb-1">
+                            <span href="#"
+                                  class="d-block text-decoration-none text-dark fs-4"
+                                  title="Truyện đang đọc"> Thể loại truyện
+                            </span>
+                        </h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <ul class="list-category">
+                        @foreach (var category in ViewBag.categories)
+                        {
+                            <li>
+                                <a asp-action="stoCat" asp-route-id="@category._id" class="text-decoration-none text-dark hover-title">
+                                    @category.catName
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr class="chapter-start container-fluid">
+    <div class="container mt-5">
+        <h2>Comments</h2>
+        <ul class="list-unstyled">
+            @foreach (var comm in ViewBag.comments)
+            {
+                <li class="row media my-2">
+                    <img class="col-4 rounded-circle" src="~/Images/@comm.avatar" alt="Generic placeholder image" style="width: 70px; height: 50px;">
+                    <div class="col-4 media-body">
+                        <h6>@comm.fullName</h6>
+                        @comm.commContent
+                    </div>
+                    @if (@HttpContextAccessor.HttpContext.Session.GetInt32("LoginId") == @comm.accId)
+                    {
+                        <p class="col-4"><a asp-action="CommentDelete" asp-route-id="@comm._id" class="btn btn-primary">Delete</a></p>
+                    }
+                </li>
+            }
+        </ul>
+        <form asp-action="CommentCreate">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="mb-3">
+                <textarea class="form-control" name="commContent" rows="3" placeholder="Enter your comment"></textarea>
+                <input type="hidden" name="commDate" value="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                <input type="hidden" name="stoId" value="@Model._id" />
+                <input type="hidden" name="accId" value="@HttpContextAccessor.HttpContext.Session.GetInt32("LoginId")" />
+            </div>
+            @if (@HttpContextAccessor.HttpContext.Session.GetInt32("LoginId") == null)
+            {
+                <a asp-action="Index" asp-controller="Login" class="btn btn-primary">Bạn cần phải đăng nhập mới bình luận được?</a>
+            }
+            else
+            {
+                <button type="submit" class="btn btn-primary">Bình luận</button>
+            }
+        </form>
+    </div>
+</div>

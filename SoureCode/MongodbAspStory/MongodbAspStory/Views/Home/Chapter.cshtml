@@ -1,0 +1,25 @@
+﻿@model MongodbAspStory.Models.ViewModels.ChapterViewModel
+
+@{
+    ViewData["Title"] = "Chapter";
+}
+
+<div class="chapter-wrapper container my-5">
+    <a href="#" class="text-decoration-none">
+        <h1 class="text-center text-success">
+            @Html.DisplayFor(model => model.title)
+        </h1>
+    </a>
+    <a href="#" class="text-decoration-none">
+        <p class="text-center text-dark">
+            @Html.DisplayFor(model => model.chapName)
+        </p>
+    </a>
+    <hr class="chapter-start container-fluid">
+    <div class="chapter-content mb-3">
+        <div class="visible-md visible-lg ads-responsive incontent-ad"
+             id="ads-chapter-pc-top"
+             style="height:90px"></div>
+        @Html.Raw(Model.chapContent)
+    </div>
+</div>
